@@ -1,0 +1,24 @@
+name: example
+description: A new Flutter project.
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.1.5 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  media_view: 
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints:
+  dart_code_metrics_presets: ^2.6.0
+
+flutter:
+  assets: 
+    - assets/
+  uses-material-design: true

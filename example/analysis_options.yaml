@@ -1,0 +1,26 @@
+include: package:flutter_lints/flutter.yaml
+
+
+linter:
+  rules:
+    - always_use_package_imports
+
+dart_code_metrics:
+  extends:
+    - package:dart_code_metrics_presets/recommended.yaml
+  rules:
+    - prefer-match-file-name:
+        exclude:
+          - lib/core_extensions
+          - test/**
+          - integration_test/**
+    - prefer-single-widget-per-file: false # TODO: reenable later
+    - avoid-shadowing:
+        ignored-names: # We have way too many of those, not worth fixing
+          - context
+          - ctx
+    - no-equal-switch-case: false # We have a quite a few of those
+    - no-equal-switch-expression-cases: false
+    - avoid-unused-instances:
+        ignored-instances:
+          - Future
