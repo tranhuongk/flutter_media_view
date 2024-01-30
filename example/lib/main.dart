@@ -45,6 +45,7 @@ class Main extends StatelessWidget {
                   uri: Uri.parse(
                     'https://images.pexels.com/photos/842711/pexels-photo-842711.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2?index=$index',
                   ),
+                  height: 400,
                   fit: BoxFit.cover,
                 ),
             },

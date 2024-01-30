@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:media_view/media_view.dart';
 import 'package:media_view/src/full_media_view.dart';
+import 'package:media_view/src/utils.dart';
 
 abstract class MediaView extends StatelessWidget {
   MediaView({
@@ -19,6 +20,7 @@ abstract class MediaView extends StatelessWidget {
       return;
     }
     MediaViewWrapper.of(context!).listMedia.add(this);
+    Utils.log('listMedia ${MediaViewWrapper.of(context!).listMedia.length}');
   }
 
   final bool ignoreFullView;

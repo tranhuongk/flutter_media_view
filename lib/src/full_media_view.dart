@@ -46,9 +46,8 @@ class _FullMediaViewState extends State<FullMediaView>
   Widget build(BuildContext context) {
     return DismissiblePage(
       onDismissed: () => Navigator.pop(context),
-      direction: isZooming
-          ? DismissiblePageDismissDirection.none
-          : DismissiblePageDismissDirection.vertical,
+      disabled: isZooming,
+      direction: DismissiblePageDismissDirection.vertical,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: listMedia.isEmpty
