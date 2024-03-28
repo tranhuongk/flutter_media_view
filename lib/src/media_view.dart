@@ -41,6 +41,10 @@ abstract class MediaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(onTap: () => onPressed(context), child: child);
+    return GestureDetector(
+      onTap: () => onPressed(context),
+      behavior: HitTestBehavior.opaque,
+      child: child,
+    );
   }
 }
