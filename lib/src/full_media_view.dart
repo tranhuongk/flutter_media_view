@@ -44,24 +44,39 @@ class _FullMediaViewState extends State<FullMediaView>
 
   @override
   Widget build(BuildContext context) {
-    return DismissiblePage(
-      onDismissed: () => Navigator.pop(context),
-      disabled: isZooming,
-      direction: DismissiblePageDismissDirection.vertical,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: listMedia.isEmpty
-            ? interactiveViewer(widget.media.fullview)
-            : PageView.builder(
-                physics:
-                    isZooming ? const NeverScrollableScrollPhysics() : null,
-                controller: pageController,
-                itemCount: listMedia.length,
-                itemBuilder: (context, index) => interactiveViewer(
-                  listMedia.elementAtOrNull(index)?.fullview,
-                ),
+    return Stack(
+      children: [
+        DismissiblePage(
+          onDismissed: () => Navigator.pop(context),
+          disabled: isZooming,
+          direction: DismissiblePageDismissDirection.vertical,
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: listMedia.isEmpty
+                ? interactiveViewer(widget.media.fullview)
+                : PageView.builder(
+                    physics:
+                        isZooming ? const NeverScrollableScrollPhysics() : null,
+                    controller: pageController,
+                    itemCount: listMedia.length,
+                    itemBuilder: (context, index) => interactiveViewer(
+                      listMedia.elementAtOrNull(index)?.fullview,
+                    ),
+                  ),
+          ),
+        ),
+        Positioned(
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: CloseButton(
+                onPressed: () => Navigator.pop(context),
+                color: Colors.white,
               ),
-      ),
+            ),
+          ),
+        )
+      ],
     );
   }
 
