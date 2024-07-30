@@ -1,17 +1,19 @@
 name: media_view
 description: Display images for all types, including a full-screen dialog, pinch & zoom.
-version: 0.0.2
+version: 0.0.3
 homepage: https://tranhuongk.xyz/
 
 environment:
   sdk: '>=3.1.5 <4.0.0'
   flutter: ">=1.17.0"
+  
 dependencies:
-  cached_network_image: ^3.3.0
-  dismissible_page: 1.0.2
+  cached_network_image: 
+  dismissible_page: 
   flutter:
     sdk: flutter
-  flutter_svg: 2.0.9
+  flutter_svg: 
+  shimmer: any
 
 dev_dependencies:
   flutter_test:

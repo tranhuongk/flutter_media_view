@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:media_view/media_view.dart';
 import 'package:media_view/src/utils.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ImageView extends MediaView {
   ImageView({
@@ -140,10 +141,13 @@ sealed class _SealedImageView extends StatelessWidget {
     );
   }
 
-  Widget get errorWidget => asset('assets/img_no_image.png');
-  Widget get loadingWidget => Platform.isIOS
-      ? const CupertinoActivityIndicator()
-      : const CircularProgressIndicator();
+  Widget get errorWidget =>
+      asset('packages/media_view/assets/img_no_image.png');
+  Widget get loadingWidget => Shimmer.fromColors(
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.grey.shade100,
+        child: const ColoredBox(color: Colors.white),
+      );
 
   Widget get network => cache
       ? CachedNetworkImage(
@@ -183,7 +187,6 @@ sealed class _SealedImageView extends StatelessWidget {
 
   Widget asset([String? path]) => Image.asset(
         path ?? uri.toString(),
-        package: path != null ? 'media_view' : null,
         fit: fit,
         semanticLabel: uri.pathSegments.lastOrNull,
         color: color,
