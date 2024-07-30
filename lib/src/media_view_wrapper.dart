@@ -5,9 +5,11 @@ class MediaViewWrapper extends InheritedWidget {
   MediaViewWrapper({
     super.key,
     required Widget Function(BuildContext context) builder,
+    this.aboveBuilder,
   }) : super(child: Builder(builder: builder));
 
   final List<MediaView> listMedia = [];
+  final Widget Function(int index)? aboveBuilder;
 
   static MediaViewWrapper of(BuildContext context) {
     final MediaViewWrapper? result = maybeOf(context);

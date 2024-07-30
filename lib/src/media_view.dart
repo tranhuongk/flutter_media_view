@@ -6,6 +6,7 @@ import 'package:media_view/src/utils.dart';
 abstract class MediaView extends StatelessWidget {
   MediaView({
     required Key? key,
+    required this.aboveBuilder,
     this.context,
     this.ignoreFullView = false,
     this.onTap,
@@ -26,17 +27,18 @@ abstract class MediaView extends StatelessWidget {
   final bool ignoreFullView;
   final BuildContext? context;
   final VoidCallback? onTap;
+  final Widget Function(MediaView index)? aboveBuilder;
 
   Widget get child;
 
-  Widget get fullview;
+  Widget get fullView;
 
   void onPressed(BuildContext context) {
     if (onTap != null) return onTap!();
 
     if (ignoreFullView) return;
 
-    FullMediaView.openFullView(this.context ?? context, this);
+    FullMediaView.openFullView(this.context ?? context, this, aboveBuilder);
   }
 
   @override

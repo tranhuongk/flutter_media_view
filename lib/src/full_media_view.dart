@@ -3,15 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:media_view/media_view.dart';
 
 class FullMediaView extends StatefulWidget {
-  const FullMediaView({required this.media, super.key});
+  const FullMediaView({
+    required this.media,
+    required this.aboveBuilder,
+    super.key,
+  });
 
   final MediaView media;
+  final Function(MediaView index)? aboveBuilder;
 
-  static void openFullView(BuildContext context, MediaView media) {
+  static void openFullView(
+    BuildContext context,
+    MediaView media,
+    Widget Function(MediaView index)? aboveBuilder,
+  ) {
     if (media.ignoreFullView) return;
 
-    (media.context ?? context)
-        .pushTransparentRoute(FullMediaView(media: media));
+    (media.context ?? context).pushTransparentRoute(FullMediaView(
+      media: media,
+      aboveBuilder: aboveBuilder,
+    ));
   }
 
   @override
@@ -23,9 +34,12 @@ class _FullMediaViewState extends State<FullMediaView>
   late final List<MediaView> listMedia =
       MediaViewWrapper.maybeOf(widget.media.context ?? context)?.listMedia ??
           [];
+  Widget Function(int)? get aboveBuilder =>
+      MediaViewWrapper.maybeOf(widget.media.context ?? context)?.aboveBuilder;
 
   late final initialPage =
       listMedia.indexWhere((element) => element.key == widget.media.key);
+  late int index = initialPage;
 
   late final PageController pageController = PageController(
     initialPage: initialPage <= 0 ? 0 : initialPage,
@@ -53,44 +67,94 @@ class _FullMediaViewState extends State<FullMediaView>
           child: Scaffold(
             backgroundColor: Colors.transparent,
             body: listMedia.isEmpty
-                ? interactiveViewer(widget.media.fullview)
+                ? interactiveViewer(widget.media)
                 : PageView.builder(
                     physics:
                         isZooming ? const NeverScrollableScrollPhysics() : null,
                     controller: pageController,
                     itemCount: listMedia.length,
-                    itemBuilder: (context, index) => interactiveViewer(
-                      listMedia.elementAtOrNull(index)?.fullview,
-                    ),
+                    onPageChanged: (i) => setState(() => index = i),
+                    itemBuilder: (context, index) =>
+                        interactiveViewer(listMedia.elementAtOrNull(index)),
                   ),
           ),
         ),
-        Positioned(
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: CloseButton(
-                onPressed: () => Navigator.pop(context),
-                color: Colors.white,
+        if (aboveBuilder != null)
+          Positioned(
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            child: aboveBuilder!(index),
+          )
+        else ...[
+          Positioned(
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: CloseButton(
+                  style: const ButtonStyle(
+                      backgroundColor:
+                          MaterialStatePropertyAll(Colors.black45)),
+                  onPressed: () => Navigator.pop(context),
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
-        )
+          if (listMedia.isNotEmpty)
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: SafeArea(
+                child: Center(
+                  child: Container(
+                    margin: const EdgeInsets.all(16.0),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.black45,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: DefaultTextStyle(
+                      style: (Theme.of(context).textTheme.labelLarge ??
+                              const TextStyle(fontSize: 16))
+                          .copyWith(color: Colors.white),
+                      child: Text('${index + 1}/${listMedia.length}'),
+                    ),
+                  ),
+                ),
+              ),
+            )
+        ]
       ],
     );
   }
 
-  Widget interactiveViewer(Widget? child) => child != null
-      ? GestureDetector(
-          onDoubleTapDown: (d) => _doubleTapDetails = d,
-          onDoubleTap: _handleDoubleTap,
-          child: InteractiveViewer(
-            transformationController: zoomController,
-            maxScale: 10,
-            minScale: 1,
-            child: Center(child: child),
-            onInteractionEnd: (details) => _updateIsZooming(),
-          ),
+  Widget interactiveViewer(MediaView? child) => child != null
+      ? Stack(
+          children: [
+            GestureDetector(
+              onDoubleTapDown: (d) => _doubleTapDetails = d,
+              onDoubleTap: _handleDoubleTap,
+              child: InteractiveViewer(
+                transformationController: zoomController,
+                maxScale: 10,
+                minScale: 1,
+                child: Center(child: child.fullView),
+                onInteractionEnd: (details) => _updateIsZooming(),
+              ),
+            ),
+            if (child.aboveBuilder != null)
+              Positioned(
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0,
+                child: child.aboveBuilder!(child),
+              )
+          ],
         )
       : const SizedBox();
 

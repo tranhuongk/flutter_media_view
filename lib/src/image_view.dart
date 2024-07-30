@@ -14,6 +14,7 @@ class ImageView extends MediaView {
     super.onTap,
     super.context,
     required this.uri,
+    super.aboveBuilder,
     this.fit = BoxFit.contain,
     this.aspectRatio,
     this.width,
@@ -68,7 +69,7 @@ class ImageView extends MediaView {
       );
 
   @override
-  Widget get fullview => Hero(
+  Widget get fullView => Hero(
         tag: heroTag ?? key.toString(),
         child: _FullImageView(
           uri: uri,
