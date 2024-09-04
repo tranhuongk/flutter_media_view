@@ -1,6 +1,6 @@
 name: media_view
 description: Display images for all types, including a full-screen dialog, pinch & zoom.
-version: 0.0.3
+version: 0.0.4
 homepage: https://tranhuongk.xyz/
 
 environment:

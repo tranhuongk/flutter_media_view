@@ -23,7 +23,8 @@ extension UriExtensions on Uri? {
 
   bool get fromFileSvg => fromFile && isSvg;
 
-  bool get fromAsset => !fromFile && !fromNetwork;
+  bool get fromAsset =>
+      !fromFile && !fromNetwork && this?.toString().isNotEmpty == true;
 
   bool get fromAssetSvg => fromAsset && isSvg;
 }

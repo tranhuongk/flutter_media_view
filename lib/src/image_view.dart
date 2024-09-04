@@ -122,7 +122,14 @@ sealed class _SealedImageView extends StatelessWidget {
       _ when uri.fromAsset => asset(),
       _ when uri.fromNetworkSvg => networkSvg,
       _ when uri.fromNetwork => network,
-      _ => const SizedBox(),
+      _ => errorBuilder?.call(
+            context,
+            PathNotFoundException(
+              uri.toString(),
+              const OSError('Uri not found!', 404),
+            ),
+          ) ??
+          errorWidget,
     };
 
     final aspectRatioChild = aspectRatio != null

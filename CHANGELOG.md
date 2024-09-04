@@ -1,3 +1,5 @@
+## 0.0.4
+* Fix from asset with empty case
 ## 0.0.3
 * Add shimmer
 ## 0.0.2
