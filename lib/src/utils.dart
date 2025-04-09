@@ -4,9 +4,7 @@ import 'package:flutter/foundation.dart';
 
 abstract class Utils {
   static log(Object? object) {
-    if (kDebugMode) {
-      print(object);
-    }
+    if (kDebugMode) print(object);
   }
 }
 

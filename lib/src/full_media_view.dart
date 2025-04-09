@@ -1,5 +1,6 @@
 import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:media_view/media_view.dart';
 
 class FullMediaView extends StatefulWidget {
@@ -48,13 +49,24 @@ class _FullMediaViewState extends State<FullMediaView>
   final zoomController = TransformationController();
   TapDownDetails? _doubleTapDetails;
   bool isZooming = false;
+  
+  @override
+  void initState() {
+    super.initState();
+    setFullScreen(true);
+  }
 
   @override
   void dispose() {
     pageController.dispose();
     zoomController.dispose();
+    setFullScreen(false);
     super.dispose();
   }
+
+  void setFullScreen(bool isFullScreen) => SystemChrome.setEnabledSystemUIMode(
+        isFullScreen ? SystemUiMode.immersiveSticky : SystemUiMode.edgeToEdge,
+      );
 
   @override
   Widget build(BuildContext context) {

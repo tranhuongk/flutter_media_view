@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:media_view/media_view.dart';
@@ -21,7 +20,6 @@ class ImageView extends MediaView {
     this.width,
     this.height,
     this.color,
-    this.heroTag,
     this.cache = true,
     this.decoration,
     this.clipBehavior,
@@ -40,7 +38,6 @@ class ImageView extends MediaView {
   final double? width;
   final double? height;
   final Color? color;
-  final String? heroTag;
   final bool cache;
   final Decoration? decoration;
   final Clip? clipBehavior;
@@ -51,7 +48,7 @@ class ImageView extends MediaView {
 
   @override
   Widget get child => Hero(
-        tag: heroTag ?? key.toString(),
+        tag: ignoreFullView == true ? UniqueKey() : key!,
         child: _ImageView(
           uri: uri,
           fit: fit,
@@ -71,7 +68,7 @@ class ImageView extends MediaView {
 
   @override
   Widget get fullView => Hero(
-        tag: heroTag ?? key.toString(),
+        tag: ignoreFullView == true ? UniqueKey() : key!,
         child: _FullImageView(
           uri: uri,
           color: color,
